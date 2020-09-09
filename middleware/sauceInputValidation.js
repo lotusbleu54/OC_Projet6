@@ -1,6 +1,9 @@
 //Chiffres, lettres, majuscules, minuscules, accents, chiffres et ponctuation basique autorisée
 const inputsRegex = new RegExp("^[A-Za-zÀ-ÿ0-9'?!. ,;_-]+$");
 
+//Afin de pouvoir effacer le fichier image si les autres données ne sont pas OK
+const fs = require('fs');
+
 //Définition du nombre de caractères min et max 
 //(rq : on considère que les mêmes règles s'appliquent aux champs name, manufacturer et mainPepper)
 const nameMinLength = 3;
@@ -10,17 +13,19 @@ const descriptionMaxLength = 100;
 
 module.exports = (req, res, next) => {
   try {
-    if (req.file) { //Cas où il y a une image en plus dans la requête
-        const sauceObject = {...JSON.parse(req.body.sauce)};
+    if (req.file) { //Cas où il y a une image en plus dans la requête 
+      const sauceObject = {...JSON.parse(req.body.sauce)};
+        //Test Regex + longueur des champs
         if (sauceObject.name.length <= nameMinLength || sauceObject.name.length >= nameMaxLength || !(inputsRegex.test(sauceObject.name))
         || sauceObject.manufacturer.length <= nameMinLength || sauceObject.manufacturer.length >= nameMaxLength || !(inputsRegex.test(sauceObject.manufacturer))
         || sauceObject.mainPepper.length <= nameMinLength || sauceObject.mainPepper.length >= nameMaxLength || !(inputsRegex.test(sauceObject.mainPepper))
         || sauceObject.description.length <= descriptionMinLength || sauceObject.description.length >= descriptionMaxLength || !(inputsRegex.test(sauceObject.description)) ) {
-            throw 'Invalid inputs !';
-            } 
-            else {
-              next();
-            }
+          fs.unlink(`images/${req.file.filename}`, (err) => {if (err) throw err});  //On efface l'image
+          throw 'Invalid inputs !';
+        } 
+        else {
+          next(); //Si pas d'erreur la validation est OK, les requêtes suivantes peuvent être effectuées 
+        }
     }
     else { //Cas où il n'y a pas d'image dans la requête, juste l'objet JSON
         if (req.body.name.length <= nameMinLength || req.body.name.length >= nameMaxLength || !(inputsRegex.test(req.body.name))
@@ -30,7 +35,7 @@ module.exports = (req, res, next) => {
             throw 'Invalid inputs !';
             } 
             else {
-            next();
+            next(); //Si pas d'erreur la validation est OK, les requêtes suivantes peuvent être effectuées
             }
     }
 } 
