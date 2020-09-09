@@ -1,13 +1,13 @@
-//Chiffres, lettres, majuscules, minuscules, accents, chiffres et ponctuation basique autorisée
-const inputsRegex = new RegExp("^[A-Za-zÀ-ÿ0-9'?!. ,;_-]+$");
-
 //Afin de pouvoir effacer le fichier image si les autres données ne sont pas OK
 const fs = require('fs');
+
+//Chiffres, lettres, majuscules, minuscules, accents, chiffres et ponctuation basique autorisée
+const inputsRegex = new RegExp("^[A-Za-zÀ-ÿ0-9'?!. ,;_-]+$");
 
 //Définition du nombre de caractères min et max 
 //(rq : on considère que les mêmes règles s'appliquent aux champs name, manufacturer et mainPepper)
 const nameMinLength = 3;
-const nameMaxLength = 50;
+const nameMaxLength = 30;
 const descriptionMinLength = 10;
 const descriptionMaxLength = 100;
 

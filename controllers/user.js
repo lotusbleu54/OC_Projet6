@@ -1,7 +1,24 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!\?@\.#\$%\^&\*])(?=.{8,})");
+// Mot de passe fort avec au moins 8 caractères dont au moins 1 minuscule, 1 majuscule, 1 chiffre, et 1 caractère spécial
+
+//Limiter la création de trop de comptes et trop de tentatives de connection
+const rateLimit = require("express-rate-limit");
+
+exports.apiLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // Fenêtre de 5 minutes
+    max: 3, //3 tentatives de connections max depuis cette IP
+    message: "Trop de tentatives de connection depuis cette IP, veuillez réessayer ultérieurement"
+  });
+
+exports.createAccountLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // Fenêtre d'1 heure
+    max: 2, // 2 comptes créés max depuis cette IP
+    message:
+      "Trop de tentatives de créations de compte depuis cette IP, veuillez réessayer ultérieurement"
+  });
 
 exports.signup = (req, res, next) => {
     if (passwordRegex.test(req.body.password)) {

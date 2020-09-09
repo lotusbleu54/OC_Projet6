@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const helmet = require('helmet');  // plugin de sécurité pour les requêtes HTPP, les heards, protection XSS, détection du MIME TYPE...
+const helmet = require('helmet');  // plugin de sécurité pour les requêtes HTTP, les headers, protection XSS, détection du MIME TYPE...
 
 //Import des routes
 const saucesRoutes = require('./routes/sauces');
