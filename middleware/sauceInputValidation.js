@@ -23,9 +23,7 @@ module.exports = (req, res, next) => {
           fs.unlink(`images/${req.file.filename}`, (err) => {if (err) throw err});  //On efface l'image
           throw 'Invalid inputs !';
         } 
-        else {
-          next(); //Si pas d'erreur la validation est OK, les requêtes suivantes peuvent être effectuées 
-        }
+        else {next();} //Si pas d'erreur la validation est OK, les requêtes suivantes peuvent être effectuées
     }
     else { //Cas où il n'y a pas d'image dans la requête, juste l'objet JSON
         if (req.body.name.length <= nameMinLength || req.body.name.length >= nameMaxLength || !(inputsRegex.test(req.body.name))
@@ -33,15 +31,9 @@ module.exports = (req, res, next) => {
         || req.body.mainPepper.length <= nameMinLength || req.body.mainPepper.length >= nameMaxLength || !(inputsRegex.test(req.body.mainPepper))
         || req.body.description.length <= descriptionMinLength || req.body.description.length >= descriptionMaxLength || !(inputsRegex.test(req.body.description)) ) {
             throw 'Invalid inputs !';
-            } 
-            else {
-            next(); //Si pas d'erreur la validation est OK, les requêtes suivantes peuvent être effectuées
-            }
+        } 
+        else {next();} //Si pas d'erreur la validation est OK, les requêtes suivantes peuvent être effectuées
     }
-} 
-  catch {
-    res.status(400).json({
-      error: new Error('Invalid request!')
-    });
-  }
-};
+  } 
+  catch {res.status(400).json({error: new Error('Invalid request!')});}
+}
