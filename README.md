@@ -1,7 +1,7 @@
-# OC_Projet6
-Projet 6 formation développeur web - So Pekocko
+# So_Pekocko_backend
+Note: Ce Repository ne contient que la partie backend du projet (Projet 6 formation développeur web).
 
-Note: Ce Repository ne contient que la partie backend du projet.
+Compétences utilisées : conception d'une API restful avec node.js et express avec base de données mongoDB.
 
 Pour la partie backend :
 1) Cloner ce répertoire => git clone https://github.com/lotusbleu54/OC_Projet6
